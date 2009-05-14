@@ -16,3 +16,5 @@ alias l='ls'
 
 alias ss='ruby script/server'
 alias sc='ruby script/console'
+#users registered in the system
+alias usersReg='cat /etc/passwd | sed s/:.*//g'
