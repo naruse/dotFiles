@@ -1,0 +1,123 @@
+;;desabilitar el scroll bar, toolbar y menu bar
+;;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+(setq-default show-trailing-whitespace t);;mostrar espacios no usados
+(setq mouse-drag-copy-region t)
+
+;;Hacer que cualquier cosa que se abra se abra en una sola ventana de emacs
+(setq ns-pop-up-frames nil)
+
+;; MELPA: gestor de paquetes en emacs
+(require 'package) ;; You might already have this line
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize) ;; You might already have this line
+
+
+(custom-set-variables
+ '(case-fold-search t)
+ '(current-language-environment "UTF-8")
+ '(make-backup-files nil)
+ '(mouse-wheel-mode t nil (mwheel))
+ '(show-paren-mode t nil (paren))
+ '(transient-mark-mode t))
+
+;; no autograbe
+(setq auto-save-default nil)
+
+;;Espacios en vez de tabs
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+
+;; this is me
+(setq user-mail-address "naruse@gmail.com")
+(setq user-full-name "Juan Sebastian Muñoz")
+
+;; nice fonts in OS X
+(setq mac-allow-anti-aliasing t)
+
+;set command key to be meta
+(setq mac-command-modifier 'meta)
+
+; interpret and use ansi color codes in shell output windows
+(ansi-color-for-comint-mode-on)
+
+;; use y/n instead of yes/no
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; nice parentheses
+(show-paren-mode t)
+(setq show-paren-style 'expression)
+
+;; UnityJS mode for emacs
+(add-to-list 'load-path "/Users/naruse/.emacs.d/extraModes")
+
+(autoload 'unityjs-mode "unityjs-mode" "Major mode for editing Unity Javascript code." t)
+(require 'unityjs-mode)
+
+;;cool cg mode for shaders
+(require 'cg-mode)
+(require 'glsl-mode)
+;;c# mode
+(require 'csharp-mode)
+
+(require 'linum);;line numbers
+(require 'omnisharp)
+
+(setq exec-path (append exec-path '("/usr/local/bin/")));;incluya el path de mono
+(setq omnisharp-server-executable-path "/Users/naruse/.emacs.d/OmniSharpServer/OmniSharp/bin/Debug/OmniSharp.exe")
+(defun my-csharp-mode-hook ()
+  (electric-pair-mode 1))
+;;add-hook por cada linea para mas organizacion
+(add-hook 'csharp-mode-hook 'my-csharp-mode-hook);; cargue auto completar parentesis/llaves/etc
+(add-hook 'csharp-mode-hook  'linum-mode)
+(add-hook 'csharp-mode-hook 'omnisharp-mode);;cargue modo omnisharp cuando cargue modo emacs
+
+
+(add-hook 'after-init-hook 'global-company-mode);;despues de cargar omnisharp, cargue company mode
+
+(load-theme 'tango-dark t)
+
+(line-number-mode 1)
+(column-number-mode 1)
+
+(require 'cc-mode)
+
+(setq inhibit-startup-message t)
+
+(global-set-key [(meta g)] 'goto-line)
+(define-key global-map "\M-4" 'query-replace)
+
+;; Otras cosas
+(setq search-highlight t)
+(setq query-replace-highlight t)
+
+(setq default-fill-column 77)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'c++-mode-hook 'turn-on-auto-fill)
+(add-hook 'c-mode-hook 'turn-on-auto-fill)
+
+(setq next-line-add-newlines nil)
+;(setq c-tab-always-indent "other")
+
+
+
+(global-font-lock-mode t)
+(setq font-lock-maximum-size nil)
+
+(define-key c-mode-map "\C-m" 'newline-and-indent)
+(define-key c++-mode-map "\C-m" 'newline-and-indent)
+(define-key csharp-mode-map [f12] 'omnisharp-go-to-definition)
+
+(setq tab-width 4)
+(setq c-basic-offset 4)
+
+;;;;;;;;;;;;;;
+(global-set-key [f3] 'shell)
+(global-set-key [f5] 'compile)
